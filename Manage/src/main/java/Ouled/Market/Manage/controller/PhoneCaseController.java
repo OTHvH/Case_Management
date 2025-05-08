@@ -3,8 +3,7 @@ package Ouled.Market.Manage.controller;
 import Ouled.Market.Manage.model.PhoneCase;
 import Ouled.Market.Manage.service.PhoneCaseService;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
@@ -23,16 +22,31 @@ public class PhoneCaseController {
     }
 
      // List all phone cases
-     @GetMapping({"/list", "/"})
-     public String listPhoneCases(Model model) {
+     @GetMapping("/list")
+     public String listPhoneCases(
+             @RequestParam(name = "sort", required = false, defaultValue = "model") String sort,
+             @RequestParam(name = "direction", required = false, defaultValue = "asc") String direction,
+             Model model) {
+     
          List<PhoneCase> phoneCases = phoneCaseService.getAllPhoneCases();
-         System.out.println("Phone cases: " + phoneCases); // Debugging
-         if (phoneCases != null) {
-             phoneCases.stream()
-                       .filter(phoneCase -> phoneCase != null)
-                       .forEach(phoneCase-> System.out.println("Phone case: " + phoneCase));
+     
+         // Sort the list based on the sort and direction parameters
+         Comparator<PhoneCase> comparator = switch (sort) {
+             case "modelNumber" -> Comparator.comparing(PhoneCase::getModelNumber);
+             case "caseType" -> Comparator.comparing(PhoneCase::getCaseType);
+             case "color" -> Comparator.comparing(PhoneCase::getColor);
+             case "quantity" -> Comparator.comparing(PhoneCase::getQuantity);
+             default -> Comparator.comparing(PhoneCase::getModel);
+         };
+     
+         if ("desc".equals(direction)) {
+             comparator = comparator.reversed();
          }
+     
+         phoneCases.sort(comparator);
+     
          model.addAttribute("phoneCases", phoneCases);
+         model.addAttribute("param", Map.of("sort", sort, "direction", direction));
          return "phonecases/list";
      }
 

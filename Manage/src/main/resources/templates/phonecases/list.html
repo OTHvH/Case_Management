@@ -92,11 +92,36 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Brand</th>
-                    <th>Model Number</th>
-                    <th>Case Type</th>
-                    <th>Color</th>
-                    <th>Quantity</th>
+                    <th>
+                        <a th:href="@{/phonecases/list(sort='model', direction=${param.direction == 'asc' ? 'desc' : 'asc'})}">
+                            Brand
+                            <span th:if="${param.sort == 'model'}" th:text="${param.direction == 'asc' ? '▲' : '▼'}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/phonecases/list(sort='modelNumber', direction=${param.direction == 'asc' ? 'desc' : 'asc'})}">
+                            Model Number
+                            <span th:if="${param.sort == 'modelNumber'}" th:text="${param.direction == 'asc' ? '▲' : '▼'}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/phonecases/list(sort='caseType', direction=${param.direction == 'asc' ? 'desc' : 'asc'})}">
+                            Case Type
+                            <span th:if="${param.sort == 'caseType'}" th:text="${param.direction == 'asc' ? '▲' : '▼'}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/phonecases/list(sort='color', direction=${param.direction == 'asc' ? 'desc' : 'asc'})}">
+                            Color
+                            <span th:if="${param.sort == 'color'}" th:text="${param.direction == 'asc' ? '▲' : '▼'}"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/phonecases/list(sort='quantity', direction=${param.direction == 'asc' ? 'desc' : 'asc'})}">
+                            Quantity
+                            <span th:if="${param.sort == 'quantity'}" th:text="${param.direction == 'asc' ? '▲' : '▼'}"></span>
+                        </a>
+                    </th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -108,25 +133,30 @@
                     <td th:text="${phoneCase != null ? phoneCase.color : 'N/A'}"></td>
                     <td th:text="${phoneCase != null ? phoneCase.quantity : 'N/A'}"></td>
                     <td>
-                        <form th:action="@{/phonecases/edit/{model}/{modelNumber}/{caseType}/{color}(
-                            model=${phoneCase.model}, 
-                            modelNumber=${phoneCase.modelNumber}, 
-                            caseType=${phoneCase.caseType}, 
-                            color=${phoneCase.color})}" 
-                          method="get">
-                        <button type="submit" class="btn btn-warning btn-sm">Edit</button>
-                        </form>
-                           
-                           <form th:action="@{/phonecases/delete/{model}/{modelNumber}/{caseType}/{color}(
-                            model=${phoneCase.model}, 
-                            modelNumber=${phoneCase.modelNumber}, 
-                            caseType=${phoneCase.caseType}, 
-                            color=${phoneCase.color})}" 
-                          method="post" 
-                          onsubmit="return handleDelete(this);">
-                        <input type="hidden" name="_method" value="delete">
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
+                        <div class="d-flex">
+                            <!-- Edit Button -->
+                            <form th:action="@{/phonecases/edit/{model}/{modelNumber}/{caseType}/{color}(
+                                    model=${phoneCase.model}, 
+                                    modelNumber=${phoneCase.modelNumber}, 
+                                    caseType=${phoneCase.caseType}, 
+                                    color=${phoneCase.color})}" 
+                                  method="get">
+                                <button type="submit" class="btn btn-warning btn-sm" style="margin-right: 18px; width: 90px;">Edit</button>
+                            </form>
+                    
+                            <!-- Delete Button -->
+                            <form th:action="@{/phonecases/delete/{model}/{modelNumber}/{caseType}/{color}(
+                                    model=${phoneCase.model}, 
+                                    modelNumber=${phoneCase.modelNumber}, 
+                                    caseType=${phoneCase.caseType}, 
+                                    color=${phoneCase.color})}" 
+                                  method="post" 
+                                  onsubmit="return handleDelete(this);">
+                                <input type="hidden" name="_method" value="delete">
+                                <button type="submit" class="btn btn-danger btn-sm" >Delete</button>
+                            </form>
+                        </div>
+                    </td>
                     
                     <script>
                         function handleDelete(form) {

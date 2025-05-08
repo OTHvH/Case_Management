@@ -4,6 +4,86 @@
     <meta charset="UTF-8">
     <title>Phone Case Inventory Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Popup styling */
+        .popup {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            margin: 1% auto;
+            padding: 2%;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            max-height: 95%; /* Adjusted to fit content within the screen */
+            position: relative;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+  
+
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 15px;
+            color: #666;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        .brand-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .brand-item:hover {
+            transform: translateY(-5px);
+            background-color: #f8f9fa;
+        }
+
+        .model-btn {
+            border: 1px solid #dee2e6 !important;
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .model-btn:hover {
+            background-color: #f8f9fa;
+            border-color: #0d6efd !important;
+        }
+
+
+        @keyframes fadeIn {
+            from {opacity: 0;}
+            to {opacity: 1;}
+        }
+
+        @media (min-width: 768px) {
+            .col-md-4 {
+                flex: 0 0 auto;
+                width: 12.5%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -16,55 +96,1041 @@
                 <p class="card-text">Track stock levels for different phone models, case types, and colors.</p>
                 <a href="/phonecases/list" class="btn btn-primary btn-lg">Go to Inventory</a>
             </div>
+
+            <!-- Brand Selection -->
             <div class="container mt-5">
-                <h3 class="text-center mb-4">Browse by Brand</h3>
+                <h3 class="text-center mb-4">Browse by Brand Only</h3>
                 <div class="row justify-content-center g-4">
                     <!-- iPhone -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=I">
-                            <img th:src="@{/images/iphone.png}" alt="iPhone" class="img-fluid" style="max-height: 80px;">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=I" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/iphone.png}" alt="iPhone" class="img-fluid mb-2" style="max-height: 80px;">
                             <div>iPhone</div>
                         </a>
                     </div>
                     <!-- Samsung -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=S">
-                            <img th:src="@{/images/samsung.png}" alt="Samsung" class="img-fluid" style="max-height: 80px;">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=S" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/samsung.png}" alt="Samsung" class="img-fluid mb-2" style="max-height: 80px;">
                             <div>Samsung</div>
                         </a>
                     </div>
-                    <!-- Oppo -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=O">
-                            <img th:src="@{/images/oppo.png}" alt="Oppo" class="img-fluid" style="max-height: 80px;">
-                            <div>Oppo</div>
-                        </a>
-                    </div>
                     <!-- Redmi -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=R">
-                            <img th:src="@{/images/redmi.png}" alt="Redmi" class="img-fluid" style="max-height: 80px;">
+                     <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/redmi.png}" alt="Redmi" class="img-fluid mb-2" style="max-height: 80px;">
                             <div>Redmi</div>
                         </a>
                     </div>
                     <!-- Huawei -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=H">
-                            <img th:src="@{/images/huawei.png}" alt="Huawei" class="img-fluid" style="max-height: 80px;">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=H" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/huawei.png}" alt="Huawei" class="img-fluid mb-2" style="max-height: 80px;">
                             <div>Huawei</div>
                         </a>
                     </div>
+                    <!-- Oppo -->
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=O" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/oppo.png}" alt="Oppo" class="img-fluid mb-2" style="max-height: 80px;">
+                            <div>Oppo</div>
+                        </a>
+                    </div>
                     <!-- Realmi -->
-                    <div class="col-4 col-md-2 text-center">
-                        <a href="/phonecases/filter?model=E">
-                            <img th:src="@{/images/realmi.png}" alt="Realmi" class="img-fluid" style="max-height: 80px;">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=E" class="btn btn-outline-primary btn-lg w-100">
+                            <img th:src="@{/images/realmi.png}" alt="Realmi" class="img-fluid mb-2" style="max-height: 80px;">
                             <div>Realmi</div>
                         </a>
                     </div>
                 </div>
-            </div>            
+            </div>
+            <!-- Browse by Brand to Model -->
+            <div class="container mt-5">
+                <h3 class="text-center mb-4">Browse by Brand to Model</h3>
+                <div class="row justify-content-center g-4">
+                    <!-- Brands -->
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('iPhonePopup')">
+                        <img th:src="@{/images/iphone.png}" alt="iPhone" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('SamsungPopup')">
+                        <img th:src="@{/images/samsung.png}" alt="Samsung" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('RedmiPopup')">
+                        <img th:src="@{/images/redmi.png}" alt="Redmi" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('HuaweiPopup')">
+                        <img th:src="@{/images/huawei.png}" alt="Huawei" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('OppoPopup')">
+                        <img th:src="@{/images/oppo.png}" alt="Oppo" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                    <div class="col-4 col-md-2 text-center brand-item" onclick="openPopup('RealmiPopup')">
+                        <img th:src="@{/images/realmi.png}" alt="Realmi" class="img-fluid mb-2" style="max-height: 80px;">
+                    </div>
+
+                </div>
+            </div>
+            
         </div>
     </div>
+
+    <!-- iPhone Popup -->
+    <div id="iPhonePopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('iPhonePopup')">&times;</span>
+            <h3 class="text-center mb-4">Select iPhone Model</h3>
+            <div class="row g-3">
+                
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=5" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone5.png}" alt="iPhone 5" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=6" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone6.png}" alt="iPhone 6" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 6</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=7" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone7.png}" alt="iPhone 7" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 7</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=8" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone8.png}" alt="iPhone 8" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 8</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=SE" class="btn model-btn">
+                        <img th:src="@{/images/models/iphonese.png}" alt="iPhone SE" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone SE</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=X" class="btn model-btn">
+                        <img th:src="@{/images/models/iphonex.png}" alt="iPhone X" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone X</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=XR" class="btn model-btn">
+                        <img th:src="@{/images/models/iphonexr.png}" alt="iPhone XR" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone XR</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=XS+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphonexsmax.png}" alt="iPhone XS Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone XS Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=11+Pro" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone11pro.png}" alt="iPhone 11 Pro" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 11 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=11" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone11.png}" alt="iPhone 11" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 11</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=11+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone11promax.png}" alt="iPhone 11 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 11 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=12" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone12.png}" alt="iPhone 12" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 12</div>
+                    </a>
+                </div>
+
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=12+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone12promax.png}" alt="iPhone 12 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 12 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=12+Mini" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone12mini.png}" alt="iPhone 12 Mini" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 12 Mini</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=13" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone13.png}" alt="iPhone 13" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 13</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=13+Pro" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone13pro.png}" alt="iPhone 13 Pro" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 13 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=13+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone13promax.png}" alt="iPhone 13 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 13 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=13+Mini" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone13mini.png}" alt="iPhone 13 Mini" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 13 Mini</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=14" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone14.png}" alt="iPhone 14" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 14</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=14+Pro" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone14pro.png}" alt="iPhone 14 Pro" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 14 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=14+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone14promax.png}" alt="iPhone 14 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 14 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=14+Plus" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone14plus.png}" alt="iPhone 14 Plus" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 14 Plus</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=15" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone15.png}" alt="iPhone 15" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 15</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=15+Pro" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone15pro.png}" alt="iPhone 15 Pro" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 15 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=15+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone15promax.png}" alt="iPhone 15 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 15 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=15+Plus" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone15plus.png}" alt="iPhone 15 Plus" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 15 Plus</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=16" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone16.png}" alt="iPhone 16" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 16</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=16+Pro" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone16pro.png}" alt="iPhone 16 Pro" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 16 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=16+Pro+Max" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone16promax.png}" alt="iPhone 16 Pro Max" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 16 Pro Max</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=I&modelNumber=16+e" class="btn model-btn">
+                        <img th:src="@{/images/models/iphone16e.png}" alt="iPhone 16 e" class="img-fluid mb-2" style="max-height: 80px;">
+                        <div>iPhone 16 e</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Samsung Popup -->
+    <div id="SamsungPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('SamsungPopup')">&times;</span>
+            <h3 class="text-center mb-4">Select Samsung Model</h3>
+            <div class="row g-3">
+                <!-- Samsung S Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S6" class="btn model-btn">Galaxy S6</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S6Edge" class="btn model-btn">Galaxy S6 Edge</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S7" class="btn model-btn">Galaxy S7</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S7Edge" class="btn model-btn">Galaxy S7 Edge</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S8" class="btn model-btn">Galaxy S8</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S8Plus" class="btn model-btn">Galaxy S8+</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S9" class="btn model-btn">Galaxy S9</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S9Plus" class="btn model-btn">Galaxy S9+</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S10" class="btn model-btn">Galaxy S10</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S10Plus" class="btn model-btn">Galaxy S10+</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S20" class="btn model-btn">Galaxy S20</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S20FE" class="btn model-btn">Galaxy S20 FE</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S21" class="btn model-btn">Galaxy S21</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S21FE" class="btn model-btn">Galaxy S21 FE</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S22" class="btn model-btn">Galaxy S22</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S22Ultra" class="btn model-btn">Galaxy S22 Ultra</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S23" class="btn model-btn">Galaxy S23</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S23Ultra" class="btn model-btn">Galaxy S23 Ultra</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S24" class="btn model-btn">Galaxy S24</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S24Ultra" class="btn model-btn">Galaxy S24 Ultra</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=S25" class="btn model-btn">Galaxy S25</a>
+                </div>
+
+                <!-- Samsung A Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A01s" class="btn model-btn">Galaxy A01s</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A02" class="btn model-btn">Galaxy A02</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A03" class="btn model-btn">Galaxy A03</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A10" class="btn model-btn">Galaxy A10</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A11" class="btn model-btn">Galaxy A11</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A12" class="btn model-btn">Galaxy A12</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A13" class="btn model-btn">Galaxy A13</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A20" class="btn model-btn">Galaxy A20</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A20e" class="btn model-btn">Galaxy A20e</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A21" class="btn model-btn">Galaxy A21</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A22" class="btn model-btn">Galaxy A22</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A23" class="btn model-btn">Galaxy A23</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A24" class="btn model-btn">Galaxy A24</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A30" class="btn model-btn">Galaxy A30</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A31" class="btn model-btn">Galaxy A31</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A32" class="btn model-btn">Galaxy A32</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A33" class="btn model-btn">Galaxy A33</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A34" class="btn model-btn">Galaxy A34</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A50" class="btn model-btn">Galaxy A50</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A51" class="btn model-btn">Galaxy A51</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A52" class="btn model-btn">Galaxy A52</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A53" class="btn model-btn">Galaxy A53</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A54" class="btn model-btn">Galaxy A54</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A55" class="btn model-btn">Galaxy A55</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A70" class="btn model-btn">Galaxy A70</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A71" class="btn model-btn">Galaxy A71</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A72" class="btn model-btn">Galaxy A72</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A73" class="btn model-btn">Galaxy A73</a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=S&modelNumber=A80" class="btn model-btn">Galaxy A80</a>
+                </div>
+                <!-- Add more Samsung models here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Redmi Popup -->
+    <div id="RedmiPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('RedmiPopup')">&times;</span>
+            <h3 class="text-center mb-4">Select Redmi Model</h3>
+
+            <!-- Redmi Note Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">📱 Redmi Note Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note8" class="btn model-btn">
+                            <div>Redmi Note 8</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note9" class="btn model-btn">
+                            <div>Redmi Note 9</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note10" class="btn model-btn">
+                            <div>Redmi Note 10</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note11" class="btn model-btn">
+                            <div>Redmi Note 11</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note12" class="btn model-btn">
+                            <div>Redmi Note 12</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note13" class="btn model-btn">
+                            <div>Redmi Note 13</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Note14" class="btn model-btn">
+                            <div>Redmi Note 14</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi K Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">🚀 Redmi K Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K20" class="btn model-btn">
+                            <div>Redmi K20</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K30" class="btn model-btn">
+                            <div>Redmi K30</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K40" class="btn model-btn">
+                            <div>Redmi K40</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K50" class="btn model-btn">
+                            <div>Redmi K50</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K60" class="btn model-btn">
+                            <div>Redmi K60</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=K70" class="btn model-btn">
+                            <div>Redmi K70</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi Turbo Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">⚡ Redmi Turbo Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Turbo3" class="btn model-btn">
+                            <div>Redmi Turbo 3</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Turbo4" class="btn model-btn">
+                            <div>Redmi Turbo 4</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi A Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">📶 Redmi A Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=A1" class="btn model-btn">
+                            <div>Redmi A1</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=A2" class="btn model-btn">
+                            <div>Redmi A2</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=A3" class="btn model-btn">
+                            <div>Redmi A3</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi C Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">💡 Redmi C Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=13C" class="btn model-btn">
+                            <div>Redmi 13C</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=13C5G" class="btn model-btn">
+                            <div>Redmi 13C 5G</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi Number Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">🔢 Redmi Number Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=9" class="btn model-btn">
+                            <div>Redmi 9</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=10" class="btn model-btn">
+                            <div>Redmi 10</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=11" class="btn model-btn">
+                            <div>Redmi 11</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=12" class="btn model-btn">
+                            <div>Redmi 12</div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=13" class="btn model-btn">
+                            <div>Redmi 13</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redmi Go Series -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-primary">🧩 Redmi Go Series</h5>
+                <div class="row g-3">
+                    <div class="col-6 col-md-4 text-center">
+                        <a href="/phonecases/filter?model=R&modelNumber=Go" class="btn model-btn">
+                            <div>Redmi Go</div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Huawei Popup -->
+     <div id="HuaweiPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('HuaweiPopup')">&times;</span>
+            <h3 class="text-center mb-4">Select Huawei Model</h3>
+            <div class="row g-3">
+                <!-- Huawei Models -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=P20" class="btn model-btn">
+                        <div>Huawei P20</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=P30" class="btn model-btn">
+                        <div>Huawei P30</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=P40" class="btn model-btn">
+                        <div>Huawei P40</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=P50" class="btn model-btn">
+                        <div>Huawei P50</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Mate10" class="btn model-btn">
+                        <div>Huawei Mate 10</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Mate20" class="btn model-btn">
+                        <div>Huawei Mate 20</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Mate30" class="btn model-btn">
+                        <div>Huawei Mate 30</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Mate40" class="btn model-btn">
+                        <div>Huawei Mate 40</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Mate50" class="btn model-btn">
+                        <div>Huawei Mate 50</div>
+                    </a>
+                </div>
+
+                <!-- Huawei Nova Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Nova3" class="btn model-btn">
+                        <div>Huawei Nova 3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Nova5" class="btn model-btn">
+                        <div>Huawei Nova 5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Nova7" class="btn model-btn">
+                        <div>Huawei Nova 7</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Nova8" class="btn model-btn">
+                        <div>Huawei Nova 8</div>
+                    </a>
+                </div>
+
+                <!-- Huawei Honor Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Honor10" class="btn model-btn">
+                        <div>Huawei Honor 10</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Honor20" class="btn model-btn">
+                        <div>Huawei Honor 20</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Honor30" class="btn model-btn">
+                        <div>Huawei Honor 30</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Honor50" class="btn model-btn">
+                        <div>Huawei Honor 50</div>
+                    </a>
+                </div>
+
+                <!-- Huawei Y Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Y5" class="btn model-btn">
+                        <div>Huawei Y5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Y6" class="btn model-btn">
+                        <div>Huawei Y6</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Y7" class="btn model-btn">
+                        <div>Huawei Y7</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Y8" class="btn model-btn">
+                        <div>Huawei Y8</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=H&modelNumber=Y9" class="btn model-btn">
+                        <div>Huawei Y9</div>
+                    </a>
+                </div>
+
+                <!-- Add more Huawei models here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Oppo Popup -->
+     <div id="OppoPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('OppoPopup')">&times;</span>
+            <h3 class="text-center mb-4">Select Oppo Model</h3>
+            <div class="row g-3">
+                <!-- Oppo Models -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F1" class="btn model-btn">
+                        <div>Oppo F1</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F3" class="btn model-btn">
+                        <div>Oppo F3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F5" class="btn model-btn">
+                        <div>Oppo F5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F7" class="btn model-btn">
+                        <div>Oppo F7</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F9" class="btn model-btn">
+                        <div>Oppo F9</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F11" class="btn model-btn">
+                        <div>Oppo F11</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F15" class="btn model-btn">
+                        <div>Oppo F15</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=F17" class="btn model-btn">
+                        <div>Oppo F17</div>
+                    </a>
+                </div>
+
+                <!-- Oppo Reno Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=Reno" class="btn model-btn">
+                        <div>Oppo Reno</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=Reno2" class="btn model-btn">
+                        <div>Oppo Reno 2</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=Reno3" class="btn model-btn">
+                        <div>Oppo Reno 3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=Reno4" class="btn model-btn">
+                        <div>Oppo Reno 4</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=Reno5" class="btn model-btn">
+                        <div>Oppo Reno 5</div>
+                    </a>
+                </div>
+
+                <!-- Oppo A Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A3" class="btn model-btn">
+                        <div>Oppo A3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A5" class="btn model-btn">
+                        <div>Oppo A5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A9" class="btn model-btn">
+                        <div>Oppo A9</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A31" class="btn model-btn">
+                        <div>Oppo A31</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A52" class="btn model-btn">
+                        <div>Oppo A52</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A72" class="btn model-btn">
+                        <div>Oppo A72</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=A92" class="btn model-btn">
+                        <div>Oppo A92</div>
+                    </a>
+                </div>
+
+                <!-- Oppo Find Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=FindX" class="btn model-btn">
+                        <div>Oppo Find X</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=FindX2" class="btn model-btn">
+                        <div>Oppo Find X2</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=FindX3" class="btn model-btn">
+                        <div>Oppo Find X3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=O&modelNumber=FindX4" class="btn model-btn">
+                        <div>Oppo Find X4</div>
+                    </a>
+                </div>
+
+                <!-- Add more Oppo models here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Realmi Popup -->
+     <div id="RealmiPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup('RealmiPopup')">&times;</span>
+            <h3 class="text-center mb-4">Select Realmi Model</h3>
+            <div class="row g-3">
+                <!-- Realme Models -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme1" class="btn model-btn">
+                        <div>Realme 1</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme2" class="btn model-btn">
+                        <div>Realme 2</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme2Pro" class="btn model-btn">
+                        <div>Realme 2 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme3" class="btn model-btn">
+                        <div>Realme 3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme3Pro" class="btn model-btn">
+                        <div>Realme 3 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme5" class="btn model-btn">
+                        <div>Realme 5</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme5Pro" class="btn model-btn">
+                        <div>Realme 5 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme6" class="btn model-btn">
+                        <div>Realme 6</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme6Pro" class="btn model-btn">
+                        <div>Realme 6 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme7" class="btn model-btn">
+                        <div>Realme 7</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Realme7Pro" class="btn model-btn">
+                        <div>Realme 7 Pro</div>
+                    </a>
+                </div>
+
+                <!-- Realme Narzo Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Narzo10" class="btn model-btn">
+                        <div>Realme Narzo 10</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Narzo20" class="btn model-btn">
+                        <div>Realme Narzo 20</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=Narzo30" class="btn model-btn">
+                        <div>Realme Narzo 30</div>
+                    </a>
+                </div>
+
+                <!-- Realme X Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=X" class="btn model-btn">
+                        <div>Realme X</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=X2" class="btn model-btn">
+                        <div>Realme X2</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=X2Pro" class="btn model-btn">
+                        <div>Realme X2 Pro</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=X3" class="btn model-btn">
+                        <div>Realme X3</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=X7" class="btn model-btn">
+                        <div>Realme X7</div>
+                    </a>
+                </div>
+
+                <!-- Realme GT Series -->
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=GT" class="btn model-btn">
+                        <div>Realme GT</div>
+                    </a>
+                </div>
+                <div class="col-6 col-md-4 text-center">
+                    <a href="/phonecases/filter?model=E&modelNumber=GTNeo" class="btn model-btn">
+                        <div>Realme GT Neo</div>
+                    </a>
+                </div>
+
+                <!-- Add more Realmi models here -->
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openPopup(popupId) {
+            document.getElementById(popupId).style.display = 'block';
+        }
+
+        function closePopup(popupId) {
+            document.getElementById(popupId).style.display = 'none';
+        }
+
+        // Close popup when clicking outside
+        window.onclick = function(event) {
+            if (event.target.className === 'popup') {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
