@@ -2,14 +2,129 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add Phone Case</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Add New Phone Case</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Base styles optimized for 6.1" screens */
+        body {
+            font-size: 18px;
+            line-height: 1.6;
+            padding-bottom: 40px;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 800px;
+            padding: 24px;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-weight: 600;
+            margin-bottom: 28px;
+            font-size: 28px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .form-label {
+            font-weight: 500;
+            margin-bottom: 10px;
+            font-size: 18px;
+            display: block;
+        }
+        
+        .form-control, .form-select {
+            font-size: 18px;
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #dee2e6;
+            height: auto;
+            margin-bottom: 8px;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #86b7fe;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .btn {
+            font-size: 18px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-top: 20px;
+            min-width: 140px;
+        }
+        
+        .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        
+        .form-text {
+            font-size: 16px;
+            margin-top: 6px;
+            color: #6c757d;
+        }
+        
+        /* Button container */
+        .button-container {
+            display: flex;
+            gap: 16px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            body {
+                font-size: 16px;
+                background-color: white;
+                padding: 0;
+            }
+            
+            .container {
+                padding: 20px 16px;
+                box-shadow: none;
+                border-radius: 0;
+                margin-top: 0;
+            }
+            
+            h1 {
+                font-size: 24px;
+                margin-bottom: 24px;
+            }
+            
+            .form-control, .form-select {
+                font-size: 16px;
+                padding: 14px;
+            }
+            
+            .btn {
+                font-size: 16px;
+                padding: 14px 20px;
+                width: 100%;
+                margin-top: 16px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-4">
+    <div class="container">
         <h1>Add New Phone Case</h1>
         <form th:action="@{/phonecases/add}" th:object="${phoneCase}" method="post">
-            <div class="mb-3">
+            <!-- Phone Brand -->
+            <div class="mb-4">
                 <label for="model" class="form-label">Phone Brand</label>
                 <select class="form-select" id="model" th:field="*{model}" required>
                     <option value=" ">--------</option>
@@ -21,20 +136,27 @@
                     <option value="E">Realmi</option>
                 </select>
             </div>
-            <div class="mb-3">
+
+            <!-- Model Number -->
+            <div class="mb-4">
                 <label for="modelNumber" class="form-label">Model Number</label>
-                <input type="text" placeholder="--------" class="form-control" id="modelNumber" th:field="*{modelNumber}" required>
-                <div class="form-text">e.g., "13 Pro", "S21", etc.</div>
+                <input type="text" placeholder="e.g., 13 Pro, S21, etc." class="form-control" id="modelNumber" th:field="*{modelNumber}" required>
+                <div class="form-text">Enter the specific phone model number</div>
             </div>
-            <div class="mb-3">
+
+            <!-- Case Type -->
+            <div class="mb-4">
                 <label for="caseType" class="form-label">Case Type</label>
                 <select class="form-select" id="caseType" th:field="*{caseType}" required>
                     <option value="">--------</option>
                     <option value="true">One-sided</option>
                     <option value="false">Double-sided</option>
                 </select>
+                <div class="form-text">Select whether the case covers one or both sides</div>
             </div>
-            <div class="mb-3">
+
+            <!-- Color -->
+            <div class="mb-4">
                 <label for="color" class="form-label">Color</label>
                 <select class="form-select" id="color" th:field="*{color}" required>
                     <option value="">--------</option>
@@ -48,14 +170,33 @@
                     <option value="Purple">Purple</option>
                 </select>
             </div>
-            <div class="mb-3">
+
+            <!-- Quantity -->
+            <div class="mb-4">
                 <label for="quantity" class="form-label">Quantity</label>
                 <input type="number" class="form-control" id="quantity" th:field="*{quantity}" min="0" required>
+                <div class="form-text">Enter the initial stock quantity</div>
             </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="/phonecases/list" class="btn btn-secondary">Cancel</a>
+
+            <!-- Buttons -->
+            <div class="button-container">
+                <button type="submit" class="btn btn-primary">Save Phone Case</button>
+                <a href="/phonecases/list" class="btn btn-secondary">Cancel</a>
+            </div>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Better touch feedback
+        document.addEventListener('touchstart', function() {}, true);
+        
+        // Focus the first field by default
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstField = document.getElementById('model');
+            if (firstField) {
+                firstField.focus();
+            }
+        });
+    </script>
 </body>
 </html>
