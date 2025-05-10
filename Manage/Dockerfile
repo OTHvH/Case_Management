@@ -1,14 +1,24 @@
-# Use Maven image for build stage
-FROM maven:3.8.6-openjdk-17 AS builder
+# Stage 1: Build the application
+FROM gradle:7.6.1-jdk17 AS builder
 WORKDIR /app
-COPY pom.xml .
-RUN mvn dependency:go-offline
-COPY src ./src
-RUN mvn package -DskipTests
+COPY . .
+RUN gradle clean build --no-daemon -x test
 
-# Final stage
+# Stage 2: Run the application
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+
+# Copy the built JAR file from the builder stage
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# Expose the application port
 EXPOSE 8080
+
+# Set environment variables for PostgreSQL
+ENV SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-d0f8l4emcj7s73d63ggg-a:5432/phonecase_db
+ENV SPRING_DATASOURCE_USERNAME=admin
+ENV SPRING_DATASOURCE_PASSWORD=m1wy5RXNIkS8U1YUTjWGDioFuooqrbnn
+ENV SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+# Run the application
 CMD ["java", "-jar", "app.jar"]
