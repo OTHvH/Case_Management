@@ -41,6 +41,6 @@ dependencies {
 }
 
 // Enable parameter names in compiled classes
-tasks.withType(JavaCompile) {
-    options.compilerArgs << "-parameters"
+tasks.withType(JavaCompile).configureEach {
+    options.release.set(17) // Ensure this matches your JDK version
 }
